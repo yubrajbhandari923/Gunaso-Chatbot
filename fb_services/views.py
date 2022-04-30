@@ -2,7 +2,7 @@ import os, json
 from django.shortcuts import render
 from django import http
 from django.views import View
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
 
 from fb_services.profile import Profile
@@ -157,6 +157,6 @@ class ProfileView(View):
                     print("\n\n Set Privaet reply \n\n")
                     responseBody += f"Set Page Body WebHook"
 
-                return Response(responseBody, status=200)
-            return Response(status=403)
-        return Response(status=404)
+                return HttpResponse(responseBody)
+            return HttpResponseForbidden()
+        return HttpResponseNotFound()
