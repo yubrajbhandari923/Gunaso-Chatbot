@@ -133,7 +133,7 @@ class quickReply():
 #     def __init__ (self,template_type):
 #         self.template_type = template_type
 
-class genericTemplateElement(Template):
+class genericTemplateElement:
 
     def __init__(self,title, subtitle,image_url, default_action=None,buttons=None):
         
