@@ -177,7 +177,7 @@ class sendAPIResponse():
             # Go through every and turn to then to dictionary
          
             for quickR in quickReplies:
-                self.requestDict["message"]["quick_replies"].append(quickR.__dict__() if type(quickR) == quickReply else quickR )
+                self.requestDict["message"]["quick_replies"].append(quickR.__dict__ if type(quickR) == quickReply else quickR )
             
 
 
@@ -190,7 +190,7 @@ class sendAPIResponse():
             if type(ele) == dict:
                 elements_.append(ele)
             else:
-                elements_.append(ele.__dict__())
+                elements_.append(ele.__dict__)
 
         self.requestDict["message"]["attachment"] = {
             "type" : "template",
