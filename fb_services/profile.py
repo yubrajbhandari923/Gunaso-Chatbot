@@ -18,7 +18,7 @@ class Profile:
         TODO: Make this function similiar to JS(original-coast-clothing demo app) to enable translations
         """
         return [
-            {"locale": "default", "text": "Welcome to Veggies App Chatbot"},
+            {"locale": "default", "text": "Gunaso Chatbot"},
         ]
 
     @property
@@ -43,18 +43,18 @@ class Profile:
             "get_started": self.getGetStarted,
         }
 
-        print (f"ProfilePayload : {profilePayload}")
+        # print (f"ProfilePayload : {profilePayload}")
         print(callMessengerProfileAPI(profilePayload))
             
         profilePayload = {
             "greeting" : self.getGreeting,
         }
-        print (f"ProfilePayload : {profilePayload}")
+        # print (f"ProfilePayload : {profilePayload}")
         print(callMessengerProfileAPI(profilePayload))
         profilePayload = {
             "persistent_menu": self.getPersistanceMenu
         }
-        print (f"ProfilePayload : {profilePayload}")
+        # print (f"ProfilePayload : {profilePayload}")
         print(callMessengerProfileAPI(profilePayload))
 
     def setPersonas(self):

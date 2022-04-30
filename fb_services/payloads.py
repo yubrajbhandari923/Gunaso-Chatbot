@@ -1,5 +1,8 @@
 from fb_services.config import APP_URL
 
+
+
+
 get_started_payload = { # GET STARTED POSTBACK PAYLOAD
     "template_type" :"generic",
     "elements" : [
@@ -16,3 +19,7 @@ get_started_payload = { # GET STARTED POSTBACK PAYLOAD
         }
     ]
 }
+
+payloads = [
+
+]
