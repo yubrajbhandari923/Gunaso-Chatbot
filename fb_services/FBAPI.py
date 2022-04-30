@@ -165,7 +165,6 @@ class sendAPIResponse():
             "message": {},
         }
 
-        return self
 
     def sendText(self, text, quickReplies=None):
         """ Send Text Message 
