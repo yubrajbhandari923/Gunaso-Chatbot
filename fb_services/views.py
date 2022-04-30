@@ -5,9 +5,6 @@ from django.views import View
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
 from fb_services.profile import Profile
 from fb_services.config import *
 from fb_services.FBAPI import callNLPConfigsAPI, callSendAPI, sendAPIResponse, genericTemplateElement, Button

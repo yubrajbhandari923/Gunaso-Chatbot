@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from fb_services.views import WebHookView, ProfileView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('profile/', ProfileView.as_view()),
+    path('webhook/', WebHookView.as_view()),
 ]
