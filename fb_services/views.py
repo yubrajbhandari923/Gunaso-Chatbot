@@ -23,10 +23,10 @@ openai.api_key = OPENAI_API_KEY
 def img_url_(name):
     """Turns Image Name to link"""
     return f"{APP_URL}/static/img/{name}.jpg"
-
-address = False
-service_id = 0
 class WebHookView(View):
+    
+
+
     def handleMessage(self, sender_psid, recieved_message):
         sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
 
@@ -156,9 +156,10 @@ class WebHookView(View):
             sendAPIResponse(sender_psid).sendText(
                 "Please share us your location (with country) so that we can provide you relevant service providers"
             ).send()
-            address = True
-            service_id = payload.split("_")[2]
-
+            g = GptBot.object.get(psid=sender_psid)
+            g.address = True
+            g.service_id = payload.split("_")[2]
+            g.save()
 
         return
 
@@ -166,12 +167,14 @@ class WebHookView(View):
         sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
 
         text = recieved_message.get("text")
-
-        if service_id == 1:
+        g = GptBot.objects.get(psid=sender_psid)
+        if g.service_id == 1:
             res = f"Hospitals:\n 1. Crimson Hospital, Manigram, 9849599277 \n 2. Lumbini Hospital, Butwal, 98000000 \n 3. Kathmandu Hospital"
-        if service_id == 2:
+        if g.service_id == 2:
             res = f"Doctors: \n1.beemarsh Bhusal \n 2, Dr. Diya"
         
+        g.service_id = 0
+        g.save()
         sendAPIResponse(sender_psid).sendText(res).send()
     
     def get(self, req, format=None):
@@ -218,8 +221,15 @@ class WebHookView(View):
 
 
                 print(f"\n\n\n Address:{address}, service_id: {service_id} \n\n\n")
-                if address:
-                    self.handleAddress(sender_psid, message)
+                try: 
+                    g = GptBot.objects.get(psid=sender_psid)
+
+                    if g.address:
+                        g.address = False
+                        g.save()
+                        self.handleAddress(sender_psid, message)
+                except Exception:
+                    pass
 
                 if webhook_event.get("message"):
                     message = webhook_event.get("message")

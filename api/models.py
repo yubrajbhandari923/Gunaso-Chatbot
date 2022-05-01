@@ -8,7 +8,8 @@ class GptBot(models.Model):
 
     prompt = models.TextField(_("Prompt"), blank=True, null=True)
     psid = models.IntegerField(_("psID"))
-
+    is_address = models.BooleanField(_("is_address"), default=False)
+    service_id = models.IntegerField(_("service_id"), default=0)
     class Meta:
         verbose_name = _("GptBot")
         verbose_name_plural = _("GptBots")
