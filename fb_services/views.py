@@ -76,10 +76,10 @@ class WebHookView(View):
                     Button("Health Services", "SERVICE_1"),
                     Button("Mental Health", "SERVICE_2"),
                     Button("Voilence", "SERVICE_3"),
-                    Button("Disaster Rescue", "SERVICE_4"),
                 ],
-            ).send()
-
+                    
+            ).send().sendButtonTemplate(":", [Button("Disaster Rescue", "SERVICE_4"),])
+        
         if payload[:7] == "SERVICE":
             sendAPIResponse(sender_psid).sendButtonTemplate(
                 "Do you want to get connected to Service Providers near you or get help from our ChatBot?",
