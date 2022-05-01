@@ -78,18 +78,23 @@ class WebHookView(View):
                     Button("Voilence", "SERVICE_3"),
                     Button("Disaster Rescue", "SERVICE_4"),
                 ],
-            )
+            ).send()
 
         if payload[:7] == "SERVICE":
-            sendAPIResponse(sender_psid).sendButtonTemplate("Do you want to get connected to Service Providers near you or get help from our ChatBot?", [Button("Provide me Service Providers", "SPROVIDER_SERVICE_1"), Button("I wanna talk", "TALK_SERVICE_1")]).send()
+            sendAPIResponse(sender_psid).sendButtonTemplate(
+                "Do you want to get connected to Service Providers near you or get help from our ChatBot?",
+                [
+                    Button("Provide me Service Providers", "SPROVIDER_SERVICE_1"),
+                    Button("I wanna talk", "TALK_SERVICE_1"),
+                ],
+            ).send()
 
         if payload[:4] == "TALK":
             sendAPIResponse(sender_psid).sendText("Hola amigo, I am GPT 3").send()
 
-        if payload[:9] == "SPROVIDER": 
+        if payload[:9] == "SPROVIDER":
             sendAPIResponse(sender_psid).sendText("Call 911").send()
-        
-        
+
         return
 
     def get(self, req, format=None):
