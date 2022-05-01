@@ -65,3 +65,37 @@ class Doctor(models.Model):
 
     def get_absolute_url(self):
         return reverse("Doctor_detail", kwargs={"pk": self.pk})
+
+class DisasterRelif(models.Model):
+
+    name = models.CharField(_("Name"), max_length=1000)
+    phone = models.CharField(_("Phone Number"), max_length=100)
+    address = models.CharField(_("Address"), max_length=500)
+
+    class Meta:
+        verbose_name = _("DisasterRelif")
+        verbose_name_plural = _("DisasterRelifs")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("DisasterRelif_detail", kwargs={"pk": self.pk})
+
+class Violence(models.Model):
+
+    
+    name = models.CharField(_("Name"), max_length=1000)
+    phone = models.CharField(_("Phone Number"), max_length=100)
+    address = models.CharField(_("Address"), max_length=500)
+
+
+    class Meta:
+        verbose_name = _("Violence")
+        verbose_name_plural = _("Violences")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("Violence_detail", kwargs={"pk": self.pk})

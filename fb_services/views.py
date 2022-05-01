@@ -24,7 +24,7 @@ def img_url_(name):
     """Turns Image Name to link"""
     return f"{APP_URL}/static/img/{name}.jpg"
 
-
+address = False
 class WebHookView(View):
     def handleMessage(self, sender_psid, recieved_message):
         sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
@@ -154,10 +154,19 @@ class WebHookView(View):
         if payload[:9] == "SPROVIDER":
             sendAPIResponse(sender_psid).sendText(
                 "Please share us your location so that we can provide you relevant service providers"
-            ).send().sendGenericTemplate([genericTemplateElement()])
+            ).send()
+
 
         return
 
+    def handleAddress(self, sender_psid, message):
+        sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
+
+        text = recieved_message.get("text")
+
+
+        sendAPIResponse(sender_psid).sendText().send()
+    
     def get(self, req, format=None):
         """Verify our webhook."""
 
@@ -199,6 +208,9 @@ class WebHookView(View):
                 sendAPIResponse(sender_psid).sendSenderAction(
                     "mark_seen"
                 ).send().sendSenderAction("typing_on")
+
+                if address:
+                    self.handleAddress(sender_psid, message)
 
                 if webhook_event.get("message"):
                     message = webhook_event.get("message")
