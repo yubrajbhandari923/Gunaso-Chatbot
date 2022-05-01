@@ -44,7 +44,7 @@ class WebHookView(View):
             ).to_dict()["choices"][0]["text"]
 
             # response = response[(response.find("?") + 1) :]  # remove text before ?
-            response = "".join((response + "aa").split(".")[:-1])  # remove after last .
+            # response = "".join((response + "aa").split(".")[:-1])  # remove after last .
 
         except Exception:
             response = "Sorry i didn't understood you"
