@@ -51,7 +51,7 @@ class WebHookView(View):
                 temperature=0.9,
                 top_p=1,
                 max_tokens=512,
-                stop=["\nHuman:", "\n"],
+                stop=["\nHuman:"],
                 frequency_penalty=0,
                 presence_penalty=0.6,
             ).to_dict()["choices"][0]["text"]
@@ -116,7 +116,7 @@ class WebHookView(View):
                     genericTemplateElement(
                         "Health Services",
                         "",
-                        img_url_("health1"),
+                        img_url_("health2"),
                         buttons=[Button("Yes", "SERVICE_1").__dict__],
                     ),
                     genericTemplateElement(
