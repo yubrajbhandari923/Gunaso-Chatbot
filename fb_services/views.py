@@ -93,16 +93,16 @@ class WebHookView(View):
             ).send().sendGenericTemplate(
                 [
                     genericTemplateElement(
-                        "Health Services", "", img_url_("img2"), buttons=[{Button('Yes', 'SERVICE_1')}]
+                        "Health Services", "", img_url_("img2"), buttons=[Button('Yes', 'SERVICE_1')]
                     ),
                     genericTemplateElement(
-                        "Mental Health", "", img_url_("img3"), buttons=[{Button('Yes', 'SERVICE_2')}]
+                        "Mental Health", "", img_url_("img3"), buttons=[Button('Yes', 'SERVICE_2')]
                     ),
                     genericTemplateElement(
-                        "Voilence", "", img_url_("img4"), buttons=[{Button('Yes', 'SERVICE_1')}]
+                        "Voilence", "", img_url_("img4"), buttons=[Button('Yes', 'SERVICE_1')]
                     ),
                     genericTemplateElement(
-                        "Disaster Rescue", "", img_url_("img6"), buttons=[{Button('Yes', 'SERVICE_1')}]
+                        "Disaster Rescue", "", img_url_("img6"), buttons=[Button('Yes', 'SERVICE_1')]
                     )
                 ],
             ).send()
