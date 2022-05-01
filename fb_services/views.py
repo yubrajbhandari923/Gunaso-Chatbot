@@ -184,7 +184,7 @@ class WebHookView(View):
             r1, r2, r3 = random.sample(range(0, ambulances.count()), 3)
             
             for i,j in enumerate([r1, r2, r3]):
-                s.sendButtonTemplate(f"Ambulances: \n {j}. {ambulances[i].name}, {ambulances[i].address}, {ambulances[i].phone} ", buttons = [Button("Call Now", "CALL AMBULANCE")] ).send()
+                s.sendButtonTemplate(f"Ambulances: \n {j}. {ambulances[i].name}, {ambulances[i].hospital_name}, {ambulances[i].phone} ", buttons = [Button("Call Now", "CALL AMBULANCE")] ).send()
 
         if g.service_id == 2:
             """Mental Health"""
