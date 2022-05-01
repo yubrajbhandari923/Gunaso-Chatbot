@@ -233,8 +233,8 @@ class WebHookView(View):
                         else:
                             self.handleMessage(sender_psid, message)
                     
-                    except Exception:
-                        print( "\n\n\  Got exception \n\n")
+                    except Exception as E:
+                        print( f"\n\n\  Got exception {E} \n\n")
 
 
                 elif webhook_event.get("postback"):
