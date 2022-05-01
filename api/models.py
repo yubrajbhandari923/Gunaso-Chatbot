@@ -3,13 +3,29 @@ from django.db import models
 def _(s):
     return s
 
+
+class GptBot(models.Model):
+
+    prompt = models.TextField(_("Prompt"), blank=True, null=True)
+    psid = models.IntegerField(_("psID"))
+
+    class Meta:
+        verbose_name = _("GptBot")
+        verbose_name_plural = _("GptBots")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("GptBot_detail", kwargs={"pk": self.pk})
+
 class Ambulance(models.Model):
 
     name = models.CharField( max_length=1000)
-    description = models.TextField()
-    hospital_name = models.CharField(_("Hospital Name"), max_length=1000)
+    description = models.TextField(blank=True, null=True)
+    hospital_name = models.CharField(_("Hospital Name"), max_length=1000, blank=True, null=True)
     phone = models.BigIntegerField(_("Phone No."))
-    image = models.ImageField(_("Image"), upload_to='ambulances', width_field=None, max_length=None)    
+    image = models.ImageField(_("Image"), upload_to='ambulances', width_field=None, max_length=None, blank=True, null=True)    
 
     class Meta:
         verbose_name = _("Ambulance")
@@ -24,7 +40,7 @@ class Ambulance(models.Model):
 class Hospital(models.Model):
 
     name = models.CharField( max_length=1000)
-    address = models.TextField(_("Address"))
+    address = models.TextField(_("Address"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("hospital")

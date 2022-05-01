@@ -14,7 +14,7 @@ from fb_services.FBAPI import (
     genericTemplateElement,
     Button,
 )
-
+from api.models import GptBot
 from fb_services.payloads import get_started_payload
 
 openai.api_key = OPENAI_API_KEY
@@ -32,9 +32,17 @@ class WebHookView(View):
         text = recieved_message.get("text")
 
         try:
+            try:
+                g = GptBot.objects.get(psid=sender_psid)
+            except Exception:
+                g = GptBot.objects.create(psid = sender_psid, prompt="")
+                g.save()
+            
+            prompt = g.prompt+f"\nHuman:{text}\nAI:",
+
             response = openai.Completion.create(
                 engine="davinci",
-                prompt=f"Human:{text}\nAI:",
+                prompt=prompt,
                 temperature=0.9,
                 top_p=1,
                 max_tokens=512,
@@ -45,7 +53,9 @@ class WebHookView(View):
 
             # response = response[(response.find("?") + 1) :]  # remove text before ?
             # response = "".join((response + "aa").split(".")[:-1])  # remove after last .
-
+            
+            g.prompt = prompt + response
+            g.save()
         except Exception:
             response = "Sorry i didn't understood you"
 
