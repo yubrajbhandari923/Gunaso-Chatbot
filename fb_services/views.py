@@ -156,7 +156,7 @@ class WebHookView(View):
             sendAPIResponse(sender_psid).sendText(
                 "Please share us your location (with country) so that we can provide you relevant service providers"
             ).send()
-            g = GptBot.object.get(psid=sender_psid)
+            g = GptBot.objects.get(psid=sender_psid)
             g.address = True
             g.service_id = payload.split("_")[2]
             g.save()
