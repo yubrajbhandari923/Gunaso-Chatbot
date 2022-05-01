@@ -7,9 +7,16 @@ from django.views.decorators.csrf import csrf_exempt
 
 from fb_services.profile import Profile
 from fb_services.config import *
-from fb_services.FBAPI import callNLPConfigsAPI, callSendAPI, sendAPIResponse, genericTemplateElement, Button
+from fb_services.FBAPI import (
+    callNLPConfigsAPI,
+    callSendAPI,
+    sendAPIResponse,
+    genericTemplateElement,
+    Button,
+)
 
 from fb_services.payloads import get_started_payload
+
 
 def img_url_(name):
     """Turns Image Name to link"""
@@ -21,7 +28,7 @@ class WebHookView(View):
         pass
         # if recieved_message.get("text"):
         #     text = recieved_message.get("text")
-            
+
         # if recieved_message.get("attachments"):
         #     url_ = recieved_message.get("attachments")[0]["payload"]["url"]
         #     # res["message"]["text"] = f"URL : {url_} "
@@ -58,19 +65,33 @@ class WebHookView(View):
 
     def handlePostback(self, sender_psid, recieved_postback):
 
-
         payload = recieved_postback["payload"]
 
         if payload == "GET_STARTED":
-          
-          
-            sendAPIResponse(sender_psid).sendGenericTemplate([genericTemplateElement('Welcome', 'Gunaso ChatBot', img_url_('welcome'))]).send()
-            
-            sendAPIResponse(sender_psid).sendGenericTemplate([genericTemplateElement('Welcome', 'Gunaso ChatBot', img_url_('welcome'))]).send()
+            sendAPIResponse(sender_psid).sendText(
+                "Hello, Thank you for reaching out. Hope you are doing well."
+            ).send().sendButtonTemplate(
+                "Here is the list of services I provide",
+                [
+                    Button("Health Services", "SERVICE_1"),
+                    Button("Mental Health", "SERVICE_2"),
+                    Button("Voilence", "SERVICE_3"),
+                    Button("Disaster Rescue", "SERVICE_4"),
+                ],
+            )
 
-            
-        return 
+        if payload[:7] == "SERVICE":
+            sendAPIResponse(sender_psid).sendButtonTemplate("Do you want to get connected to Service Providers near you or get help from our ChatBot?", [Button("Provide me Service Providers", "SPROVIDER_SERVICE_1"), Button("I wanna talk", "TALK_SERVICE_1")]).send()
+
+        if payload[:4] == "TALK":
+            sendAPIResponse(sender_psid).sendText("Hola amigo, I am GPT 3").send()
+
+        if payload[:9] == "SPROVIDER": 
+            sendAPIResponse(sender_psid).sendText("Call 911").send()
         
+        
+        return
+
     def get(self, req, format=None):
         """Verify our webhook."""
 
@@ -107,6 +128,11 @@ class WebHookView(View):
                 webhook_event = entry["messaging"][0]
 
                 sender_psid = webhook_event["sender"]["id"]
+
+                # Sends Seen and Typing
+                sendAPIResponse(sender_psid).sendSenderAction(
+                    "mark_seen"
+                ).send().sendSenderAction("typing_on")
 
                 if webhook_event.get("message"):
                     message = webhook_event.get("message")

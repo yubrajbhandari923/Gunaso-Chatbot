@@ -145,6 +145,14 @@ class genericTemplateElement:
         if buttons:
             self.buttons = buttons
 
+
+# class buttonTemplateElement:
+#     """ """
+#     def __init__(self, text, buttons):
+#         self.text = text
+#         self.buttons = buttons
+
+
 class Button:
     def __init__(self, title, postback_or_url, type="postback"):
 
@@ -162,14 +170,15 @@ class sendAPIResponse():
         self.requestDict = {
             "messaging_type": "RESPONSE",
             "recipient": {"id": str(sender_psid)},
-            "message": {},
+            
         }
 
 
     def sendText(self, text, quickReplies=None):
         """ Send Text Message 
             quickReplies must be a List of quickReplies object or similiar format """
-
+        self.clearRequestDict()
+        self.requestDict["message"] = {}
         self.requestDict["message"]["text"] = text
         if quickReplies:
             self.requestDict["message"]["quick_replies"] = []
@@ -184,8 +193,9 @@ class sendAPIResponse():
         return self
 
     def sendGenericTemplate(self, elements):
+        self.clearRequestDict()
+        self.requestDict["message"] = {}
         elements_ = list()
-
         for ele in elements:
             if type(ele) == dict:
                 elements_.append(ele)
@@ -202,9 +212,40 @@ class sendAPIResponse():
 
 
         return self
-    
-    def clearRequestDict(self):
+
+    def sendButtonTemplate(self, text, buttons):
+        self.clearRequestDict() 
         self.requestDict["message"] = {}
+
+        buttons_ = list()
+        for button in buttons:
+            if type(button) == dict:
+                buttons_.append(button)
+            else:
+                buttons_.append(button.__dict__)
+
+
+        self.requestDict["message"]["attachment"] = {
+            "type" : "template",
+            "payload" : {
+                "template_type": "button",
+                "text": text,
+                "buttons": buttons_
+            }
+        }
+
+        return self
+
+    def sendSenderAction(self, action):
+        """ action may be  mark_seen, typing_on, typing_off"""
+        self.clearRequestDict()
+
+        self.requestDict["sender_action"] = action
+        return self
+
+    def clearRequestDict(self):
+        self.requestDict.pop("message", None)
+        self.requestDict.pop("sender_action", None)
 
         return self
 

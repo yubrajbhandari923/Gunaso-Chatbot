@@ -82,8 +82,21 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
 
+    'default': {
+        'ENGINE': 'django_cockroachdb',
+        'NAME': os.environ.get('COCKROACH_DB_DATABASE'),
+        'USER': os.environ.get('COCKROACH_DB_USERNAME'),
+        'PASSWORD': os.environ.get('COCKROACH_DB_PASSWORD'),
+        'HOST': os.environ.get('COCKROACH_DB_HOST'),
+        'PORT': os.environ.get('COCKROACH_DB_PORT'),
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'options': f'--cluster={os.environ.get("COCKROACH_DB_CLUSTER")}'
+        },
+    },
+
 }
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation

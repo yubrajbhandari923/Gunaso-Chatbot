@@ -10,6 +10,8 @@ whitenoise = "*"
 gunicorn = "*"
 django-heroku = "*"
 dj-database-url = "*"
+psycopg2 = "*"
+django-cockroachdb = "*"
 
 [dev-packages]
 

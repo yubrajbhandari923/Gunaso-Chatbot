@@ -2,6 +2,8 @@ from .FBAPI import *
 from .config import *
 from .payloads import get_started_payload
 import json
+
+
 class Profile:
     def setWebhook(self):
         print(callSubscriptionAPI())
@@ -18,7 +20,10 @@ class Profile:
         TODO: Make this function similiar to JS(original-coast-clothing demo app) to enable translations
         """
         return [
-            {"locale": "default", "text": "Gunaso Chatbot"},
+            {
+                "locale": "default",
+                "text": "AI-powered messenger bot that connects victims of violence, disasters, mental health, and those in need of other health services with the appropriate service provider, ensuring their protection, rescue, and rehabilitation.",
+            },
         ]
 
     @property
@@ -26,14 +31,14 @@ class Profile:
         return [
             {
                 "locale": "default",
-                "composer_input_disabled": True, # Disables Typing field
+                "composer_input_disabled": False,  # Disables Typing field
                 "call_to_actions": [
-                    {
-                        "title": "Restart",
-                        "type": "postback",
-                        "payload": "GET_STARTED",
-                    },
-                ]
+                    # {
+                    #     "title": "Restart",
+                    #     "type": "postback",
+                    #     "payload": "GET_STARTED",
+                    # },
+                ],
             }
         ]
 
@@ -45,15 +50,13 @@ class Profile:
 
         # print (f"ProfilePayload : {profilePayload}")
         print(callMessengerProfileAPI(profilePayload))
-            
+
         profilePayload = {
-            "greeting" : self.getGreeting,
+            "greeting": self.getGreeting,
         }
         # print (f"ProfilePayload : {profilePayload}")
         print(callMessengerProfileAPI(profilePayload))
-        profilePayload = {
-            "persistent_menu": self.getPersistanceMenu
-        }
+        profilePayload = {"persistent_menu": self.getPersistanceMenu}
         # print (f"ProfilePayload : {profilePayload}")
         print(callMessengerProfileAPI(profilePayload))
 
@@ -64,8 +67,8 @@ class Profile:
 
         if not personas.get("_Error", None):
             for persona in personas:
-                PUSH_PERSONA({"name":persona["name"], "id": persona["id"]})
-        
+                PUSH_PERSONA({"name": persona["name"], "id": persona["id"]})
+
             existingPersonas = PERSONAS
 
             for persona in newPersonas:
@@ -81,5 +84,5 @@ class Profile:
         callMessengerProfileAPI(payload)
 
     def setPageFeedWebhook(self):
-        callSubscriptionAPI('feeds')
-        callSubscribedApps('feeds')
+        callSubscriptionAPI("feeds")
+        callSubscribedApps("feeds")
