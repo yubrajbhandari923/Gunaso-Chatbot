@@ -14,7 +14,7 @@ from fb_services.FBAPI import (
     genericTemplateElement,
     Button,
 )
-from api.models import GptBot
+from api.models import GptBot, Hospital, Doctor, Ambulance, Violence, DisasterRelif
 from fb_services.payloads import get_started_payload
 
 openai.api_key = OPENAI_API_KEY
@@ -25,6 +25,7 @@ def img_url_(name):
     return f"{APP_URL}/static/img/{name}.jpg"
 
 address = False
+service_id = 0
 class WebHookView(View):
     def handleMessage(self, sender_psid, recieved_message):
         sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
@@ -50,9 +51,9 @@ class WebHookView(View):
                 temperature=0.9,
                 top_p=1,
                 max_tokens=512,
-                stop=["\nHuman:", "\n"]
-                # frequency_penalty=1,
-                # presence_penalty=1,
+                stop=["\nHuman:", "\n"],
+                frequency_penalty=0,
+                presence_penalty=0.6,
             ).to_dict()["choices"][0]["text"]
 
             # response = response[(response.find("?") + 1) :]  # remove text before ?
@@ -115,26 +116,26 @@ class WebHookView(View):
                     genericTemplateElement(
                         "Health Services",
                         "",
-                        img_url_("img2"),
+                        img_url_("health1"),
                         buttons=[Button("Yes", "SERVICE_1").__dict__],
                     ),
                     genericTemplateElement(
                         "Mental Health Relief",
                         "",
-                        img_url_("img3"),
+                        img_url_("mental2"),
                         buttons=[Button("Yes", "SERVICE_2").__dict__],
                     ),
                     genericTemplateElement(
                         "Violence Prevention",
                         "",
-                        img_url_("img4"),
-                        buttons=[Button("Yes", "SERVICE_1").__dict__],
+                        img_url_("violence1"),
+                        buttons=[Button("Yes", "SERVICE_3").__dict__],
                     ),
                     genericTemplateElement(
                         "Disaster Rescue",
                         "",
-                        img_url_("img6"),
-                        buttons=[Button("Yes", "SERVICE_1").__dict__],
+                        img_url_("disaster2"),
+                        buttons=[Button("Yes", "SERVICE_4").__dict__],
                     ),
                 ],
             ).send()
@@ -143,8 +144,8 @@ class WebHookView(View):
             sendAPIResponse(sender_psid).sendButtonTemplate(
                 "Do you want to get connected to Service Providers near you or get help from our ChatBot?",
                 [
-                    Button("Provide me Service Providers", "SPROVIDER_SERVICE_1"),
-                    Button("I wanna talk", "TALK_SERVICE_1"),
+                    Button("Provide me Service Providers", "SPROVIDER_SERVICE_"+payload.split("_")[1]),
+                    Button("I wanna talk", "TALK_SERVICE_"+payload.split("_")[1]),
                 ],
             ).send()
 
@@ -153,9 +154,10 @@ class WebHookView(View):
 
         if payload[:9] == "SPROVIDER":
             sendAPIResponse(sender_psid).sendText(
-                "Please share us your location so that we can provide you relevant service providers"
+                "Please share us your location (with country) so that we can provide you relevant service providers"
             ).send()
 
+            service_id = payload.split("_")[2]
 
         return
 
@@ -164,8 +166,12 @@ class WebHookView(View):
 
         text = recieved_message.get("text")
 
-
-        sendAPIResponse(sender_psid).sendText().send()
+        if service_id == 1:
+            res = f"Hospitals:\n 1. Crimson Hospital, Manigram, 9849599277 \n 2. Lumbini Hospital, Butwal, 98000000 \n 3. Kathmandu Hospital"
+        if service_id == 2:
+            res = f"Doctors: \n1.beemarsh Bhusal \n 2, Dr. Diya"
+        
+        sendAPIResponse(sender_psid).sendText(res).send()
     
     def get(self, req, format=None):
         """Verify our webhook."""
