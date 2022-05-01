@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django_cockroachdb',
         'NAME': os.environ.get('COCKROACH_DB_DATABASE'),
         'USER': os.environ.get('COCKROACH_DB_USERNAME'),
-        'PASSWORD': os.environ.get('COCKROACH_DB_PASSWORD'),
+        'PASSWORD': os.environ.get('COCKROACH_DB_PWD'),
         'HOST': os.environ.get('COCKROACH_DB_HOST'),
         'PORT': os.environ.get('COCKROACH_DB_PORT'),
         'OPTIONS': {

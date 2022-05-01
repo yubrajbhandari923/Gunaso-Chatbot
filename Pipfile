@@ -13,6 +13,7 @@ dj-database-url = "*"
 psycopg2 = "*"
 django-cockroachdb = "*"
 openai = "*"
+pillow = "*"
 
 [dev-packages]
 

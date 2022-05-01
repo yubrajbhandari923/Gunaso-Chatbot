@@ -27,24 +27,24 @@ def img_url_(name):
 
 class WebHookView(View):
     def handleMessage(self, sender_psid, recieved_message):
-        sendAPIResponse(sender_psid).sendSenderAction('typing_on').send()
+        sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
 
         text = recieved_message.get("text")
 
         try:
             response = openai.Completion.create(
                 engine="davinci",
-                prompt=text,
+                prompt=f"Human:{text}\nAI:",
                 temperature=0.9,
                 top_p=1,
-                max_tokens=100,
-                stop=['\n']
+                max_tokens=512,
+                stop=["\nHuman:", "\n"]
                 # frequency_penalty=1,
                 # presence_penalty=1,
-            ).to_dict()['choices'][0]['text']
+            ).to_dict()["choices"][0]["text"]
 
-            response = response[(response.find('?')+1) :] # remove text before ?
-            response = "".join((response + 'aa').split('.')[:-1]) # remove after last .
+            # response = response[(response.find("?") + 1) :]  # remove text before ?
+            response = "".join((response + "aa").split(".")[:-1])  # remove after last .
 
         except Exception:
             response = "Sorry i didn't understood you"
@@ -99,17 +99,29 @@ class WebHookView(View):
             ).send().sendGenericTemplate(
                 [
                     genericTemplateElement(
-                        "Health Services", "", img_url_("img2"), buttons=[Button('Yes', 'SERVICE_1').__dict__]
+                        "Health Services",
+                        "",
+                        img_url_("img2"),
+                        buttons=[Button("Yes", "SERVICE_1").__dict__],
                     ),
                     genericTemplateElement(
-                        "Mental Health Relief", "", img_url_("img3"), buttons=[Button('Yes', 'SERVICE_2').__dict__]
+                        "Mental Health Relief",
+                        "",
+                        img_url_("img3"),
+                        buttons=[Button("Yes", "SERVICE_2").__dict__],
                     ),
                     genericTemplateElement(
-                        "Violence Prevention", "", img_url_("img4"), buttons=[Button('Yes', 'SERVICE_1').__dict__]
+                        "Violence Prevention",
+                        "",
+                        img_url_("img4"),
+                        buttons=[Button("Yes", "SERVICE_1").__dict__],
                     ),
                     genericTemplateElement(
-                        "Disaster Rescue", "", img_url_("img6"), buttons=[Button('Yes', 'SERVICE_1').__dict__]
-                    )
+                        "Disaster Rescue",
+                        "",
+                        img_url_("img6"),
+                        buttons=[Button("Yes", "SERVICE_1").__dict__],
+                    ),
                 ],
             ).send()
 
@@ -126,7 +138,9 @@ class WebHookView(View):
             sendAPIResponse(sender_psid).sendText("Hola amigo, I am GPT 3").send()
 
         if payload[:9] == "SPROVIDER":
-            sendAPIResponse(sender_psid).sendText("Please share us your location so that we can provide you relevant service providers").send()
+            sendAPIResponse(sender_psid).sendText(
+                "Please share us your location so that we can provide you relevant service providers"
+            ).send().sendGenericTemplate([sendGenericTemplateElement()])
 
         return
 
