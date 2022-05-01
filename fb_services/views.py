@@ -37,11 +37,14 @@ class WebHookView(View):
                 prompt=text,
                 temperature=0.9,
                 top_p=1,
-                max_token=100
+                max_tokens=100
                 # stop=['\n']
                 # frequency_penalty=1,
                 # presence_penalty=1,
             ).to_dict()['choices'][0]['text']
+
+            response = response[(response.find('?')+1) :] # remove text before ?
+            response = "".join((response + 'aa').split('.')[:-1]) # remove after last .
 
         except Exception:
             response = "Sorry i didn't understood you"
@@ -123,7 +126,7 @@ class WebHookView(View):
             sendAPIResponse(sender_psid).sendText("Hola amigo, I am GPT 3").send()
 
         if payload[:9] == "SPROVIDER":
-            sendAPIResponse(sender_psid).sendText("Call 911").send()
+            sendAPIResponse(sender_psid).sendText("Please share us your location so that we can provide you relevant service providers").send()
 
         return
 
