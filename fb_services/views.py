@@ -96,13 +96,17 @@ class WebHookView(View):
             ).send().sendGenericTemplate(
                 [
                     genericTemplateElement(
-                        "Health Services", "", img_url_("img2"), default_action={""}
+                        "Health Services", "", img_url_("img2"), default_action={"type": "postback", "payload": "SERVICE_1"}
+                    ),
+                    genericTemplateElement(
+                        "Mental Health", "", img_url_("img3"), default_action={"type": "postback", "payload": "SERVICE_2"}
+                    ),
+                    genericTemplateElement(
+                        "Voilence", "", img_url_("img4"), default_action={"type": "postback", "payload": "SERVICE_3"}
+                    ),
+                    genericTemplateElement(
+                        "Disaster Rescue", "", img_url_("img6"), default_action={"type": "postback", "payload": "SERVICE_4"}
                     )
-                ],
-            ).send().sendButtonTemplate(
-                "",
-                [
-                    Button("Disaster Rescue", "SERVICE_4"),
                 ],
             ).send()
 
