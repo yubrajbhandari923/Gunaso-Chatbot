@@ -32,13 +32,13 @@ class Profile:
             {
                 "locale": "default",
                 "composer_input_disabled": False,  # Disables Typing field
-                "call_to_actions": [
+                # "call_to_actions": [
                     # {
                     #     "title": "Restart",
                     #     "type": "postback",
                     #     "payload": "GET_STARTED",
                     # },
-                ],
+                # ],
             }
         ]
 
