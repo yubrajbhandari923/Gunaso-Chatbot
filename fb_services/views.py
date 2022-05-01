@@ -27,21 +27,24 @@ def img_url_(name):
 
 class WebHookView(View):
     def handleMessage(self, sender_psid, recieved_message):
+        sendAPIResponse(sender_psid).sendSenderAction('typing_on')
+
         text = recieved_message.get("text")
 
         try:
             response = openai.Completion.create(
                 engine="davinci",
-                prompt="I am sad. What should I do",
+                prompt=text,
                 temperature=0.9,
-                max_tokens=512,
                 top_p=1,
-                frequency_penalty=1,
-                presence_penalty=1,
+                max_token=100
+                # stop=['\n']
+                # frequency_penalty=1,
+                # presence_penalty=1,
             ).to_dict()['choices'][0]['text']
 
         except Exception:
-            response = "K Bolya vai, K bolya."
+            response = "Sorry i didn't understood you"
 
         sendAPIResponse(sender_psid).sendText(response).send()
         # if recieved_message.get("text"):
@@ -93,16 +96,16 @@ class WebHookView(View):
             ).send().sendGenericTemplate(
                 [
                     genericTemplateElement(
-                        "Health Services", "", img_url_("img2"), buttons=[Button('Yes', 'SERVICE_1')]
+                        "Health Services", "", img_url_("img2"), buttons=[Button('Yes', 'SERVICE_1').__dict__]
                     ),
                     genericTemplateElement(
-                        "Mental Health", "", img_url_("img3"), buttons=[Button('Yes', 'SERVICE_2')]
+                        "Mental Health", "", img_url_("img3"), buttons=[Button('Yes', 'SERVICE_2').__dict__]
                     ),
                     genericTemplateElement(
-                        "Voilence", "", img_url_("img4"), buttons=[Button('Yes', 'SERVICE_1')]
+                        "Voilence", "", img_url_("img4"), buttons=[Button('Yes', 'SERVICE_1').__dict__]
                     ),
                     genericTemplateElement(
-                        "Disaster Rescue", "", img_url_("img6"), buttons=[Button('Yes', 'SERVICE_1')]
+                        "Disaster Rescue", "", img_url_("img6"), buttons=[Button('Yes', 'SERVICE_1').__dict__]
                     )
                 ],
             ).send()
