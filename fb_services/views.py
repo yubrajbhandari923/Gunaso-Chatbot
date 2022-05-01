@@ -1,4 +1,4 @@
-import os, json, openai
+import os, json, openai, random
 from django.shortcuts import render
 from django import http
 from django.views import View
@@ -36,11 +36,11 @@ class WebHookView(View):
             try:
 
                 g = GptBot.objects.get(psid=sender_psid)
-                print("Foound OBJECT")
+                # print("Foound OBJECT")
             except Exception:
-                g = GptBot.objects.create(psid = sender_psid, prompt="")
+                g = GptBot.objects.create(psid = sender_psid, prompt="Human: Hey, how are you doing?\nAI: I'm good! What would you like to chat about?")
                 g.save()
-                print("Created OBJECT")
+                # print("Created OBJECT")
             
             prompt = g.prompt+f"\nHuman:{text}\nAI:"
             print(f"prompt : {prompt} ")
@@ -168,14 +168,39 @@ class WebHookView(View):
 
         text = recieved_message.get("text")
         g = GptBot.objects.get(psid=sender_psid)
+        s = sendAPIResponse(sender_psid)
+       
         if g.service_id == 1:
-            res = f"Hospitals:\n 1. Crimson Hospital, Manigram, 9849599277 \n 2. Lumbini Hospital, Butwal, 98000000 \n 3. Kathmandu Hospital"
+            """Health Service"""
+            hospitals_queryset = Hospital.objects.all()
+            
+            r1, r2, r3 = random.sample(range(0, hospitals_queryset.count()), 3)
+            
+            for i, j in enumerate([r1, r2, r3]):
+                s.sendText(f"Hospitals: \n {j}. {hospitals_queryset[i].name}, {hospitals_queryset[i].address} ").send()
+
+            ambulances = Ambulance.objects.all()
+
+            r1, r2, r3 = random.sample(range(0, ambulances.count()), 3)
+            
+            for i,j in enumerate([r1, r2, r3]):
+                s.sendButtonTemplate(f"Ambulances: \n {j}. {ambulances[i].name}, {ambulances[i].address}, {ambulances[i].phone} ", buttons = [Button("Call Now", "CALL AMBULANCE")] ).send()
+
         if g.service_id == 2:
-            res = f"Doctors: \n1.beemarsh Bhusal \n 2, Dr. Diya"
-        
+            """Mental Health"""
+
+            hospitals_queryset = Hospital.objects.all()
+            doctors = Doctor.objects.all()
+            r1, r2, r3 = random.sample(range(0, min(hospitals_queryset.count(), doctors.count())), 3)
+            
+            for i,j in enumerate([r1, r2, r3]):            
+                s.sendText(f"Consult Doctors Available: {j}. {doctors[i].name} at {hospitals_queryset[i].name}, {hospitals_queryset[i].address} ").send()
+            
+        if g.service_id == 3:
+            """ Violence """
+            pass
         g.service_id = 0
         g.save()
-        sendAPIResponse(sender_psid).sendText(res).send()
     
     def get(self, req, format=None):
         """Verify our webhook."""
