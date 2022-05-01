@@ -1,4 +1,4 @@
-import os, json
+import os, json, openai
 from django.shortcuts import render
 from django import http
 from django.views import View
@@ -17,6 +17,8 @@ from fb_services.FBAPI import (
 
 from fb_services.payloads import get_started_payload
 
+openai.api_key = OPENAI_API_KEY
+
 
 def img_url_(name):
     """Turns Image Name to link"""
@@ -25,7 +27,26 @@ def img_url_(name):
 
 class WebHookView(View):
     def handleMessage(self, sender_psid, recieved_message):
-        pass
+        text = recieved_message.get("text")
+
+        try:
+            response = json.loads(
+
+            openai.Completion.create(
+                engine="davinci",
+                prompt=text,
+                temperature=0.9,
+                max_tokens=512,
+                top_p=1,
+                frequency_penalty=1,
+                presence_penalty=1,
+            )
+
+        )
+        except Exception:
+            response = "K Bolya vai, K bolya."
+
+        sendAPIResponse(sender_psid).sendText(response).send()
         # if recieved_message.get("text"):
         #     text = recieved_message.get("text")
 
@@ -70,16 +91,21 @@ class WebHookView(View):
         if payload == "GET_STARTED":
             sendAPIResponse(sender_psid).sendText(
                 "Hello, Thank you for reaching out. Hope you are doing well."
-            ).send().sendButtonTemplate(
-                "Here is the list of services I provide",
+            ).send().sendText(
+                "Here is the list of services I provide."
+            ).send().sendGenericTemplate(
                 [
-                    Button("Health Services", "SERVICE_1"),
-                    Button("Mental Health", "SERVICE_2"),
-                    Button("Voilence", "SERVICE_3"),
+                    genericTemplateElement(
+                        "Health Services", "", img_url_("img2"), default_action={""}
+                    )
                 ],
-                    
-            ).send().sendButtonTemplate("", [Button("Disaster Rescue", "SERVICE_4"),]).send()
-        
+            ).send().sendButtonTemplate(
+                "",
+                [
+                    Button("Disaster Rescue", "SERVICE_4"),
+                ],
+            ).send()
+
         if payload[:7] == "SERVICE":
             sendAPIResponse(sender_psid).sendButtonTemplate(
                 "Do you want to get connected to Service Providers near you or get help from our ChatBot?",

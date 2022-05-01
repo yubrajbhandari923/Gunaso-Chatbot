@@ -11,7 +11,7 @@ APP_URL = os.environ.get("APP_URL") #heroku website link
 WEBHOOK_URL = APP_URL +'/webhook'
 PERSONAS = dict()
 VERIFY_TOKEN = os.environ["VERIFY_TOKEN"]
-
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 NEW_PERSONAS = [
     {
         "name" : "Hari",
