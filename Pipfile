@@ -14,6 +14,7 @@ psycopg2 = "*"
 django-cockroachdb = "*"
 openai = "*"
 pillow = "*"
+geopy = "*"
 
 [dev-packages]
 

@@ -159,6 +159,7 @@ class WebHookView(View):
             address = True
             service_id = payload.split("_")[2]
 
+
         return
 
     def handleAddress(self, sender_psid, message):
@@ -215,6 +216,8 @@ class WebHookView(View):
                     "mark_seen"
                 ).send().sendSenderAction("typing_on")
 
+
+                print(f"\n\n\n Address:{address}, service_id: {service_id} \n\n\n")
                 if address:
                     self.handleAddress(sender_psid, message)
 
