@@ -221,19 +221,21 @@ class WebHookView(View):
 
 
                 # print(f"\n\n\n Address:{address}, service_id: {service_id} \n\n\n")
-                try: 
-                    g = GptBot.objects.get(psid=sender_psid)
-
-                    if g.address:
-                        g.address = False
-                        g.save()
-                        self.handleAddress(sender_psid, message)
-                except Exception:
-                    pass
-
                 if webhook_event.get("message"):
                     message = webhook_event.get("message")
-                    self.handleMessage(sender_psid, message)
+                    try: 
+                        g = GptBot.objects.get(psid=sender_psid)
+
+                        if g.address:
+                            g.address = False
+                            g.save()
+                            self.handleAddress(sender_psid, message)
+                        else:
+                            self.handleMessage(sender_psid, message)
+                    
+                    except Exception:
+                        print( "\n\n\  Got exception \n\n")
+
 
                 elif webhook_event.get("postback"):
                     postback = webhook_event.get("postback")
