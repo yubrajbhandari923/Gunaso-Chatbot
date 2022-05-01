@@ -4,4 +4,4 @@ from api.models import GptBot, Ambulance, Doctor, Hospital
 admin.site.register(GptBot)
 admin.site.register(Doctor)
 admin.site.register(Ambulance)
-admin.site.register(Doctor)
+admin.site.register(Hospital)
