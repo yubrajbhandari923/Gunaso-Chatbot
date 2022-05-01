@@ -10,14 +10,6 @@
     "hospital_name": "Chirayu National Hospital &  Medical Institute"
   },
   {
-    "id": "155",
-    "name": "Akhil Nepal Chiya Majdur Sangh",
-    "description": "Jhapa",
-    "phone": "9814952000",
-    "image": "https://www.hamrodoctor.com/img/default_ambulance.png",
-    "model": "Ambulance"
-  },
-  {
     "id": "3",
     "name": "Alka Hospital Ambulance",
     "description": "Jawalakhel, Lalitpur",
