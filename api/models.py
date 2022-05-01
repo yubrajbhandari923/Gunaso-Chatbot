@@ -24,7 +24,7 @@ class Ambulance(models.Model):
     name = models.CharField( max_length=1000)
     description = models.TextField(blank=True, null=True)
     hospital_name = models.CharField(_("Hospital Name"), max_length=1000, blank=True, null=True)
-    phone = models.BigIntegerField(_("Phone No."))
+    phone = models.CharField(_("Phone No."), max_length=20)
     image = models.ImageField(_("Image"), upload_to='ambulances', width_field=None, max_length=None, blank=True, null=True)    
 
     class Meta:

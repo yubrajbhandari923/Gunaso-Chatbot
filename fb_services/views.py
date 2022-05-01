@@ -41,7 +41,7 @@ class WebHookView(View):
                 g.save()
                 print("Created OBJECT")
             
-            prompt = g.prompt+f"\nHuman:{text}\nAI:",
+            prompt = g.prompt+f"\nHuman:{text}\nAI:"
             print(f"prompt : {prompt} ")
 
             response = openai.Completion.create(
@@ -154,7 +154,7 @@ class WebHookView(View):
         if payload[:9] == "SPROVIDER":
             sendAPIResponse(sender_psid).sendText(
                 "Please share us your location so that we can provide you relevant service providers"
-            ).send().sendGenericTemplate([sendGenericTemplateElement()])
+            ).send().sendGenericTemplate([genericTemplateElement()])
 
         return
 
