@@ -194,7 +194,7 @@ class sendAPIResponse():
 
     def sendGenericTemplate(self, elements):
         self.clearRequestDict()
-        self.requestDict["message"] = {}
+        self.requestDict["message"] = dict()
         elements_ = list()
         for ele in elements:
             if type(ele) == dict:
