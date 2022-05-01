@@ -46,7 +46,7 @@ class WebHookView(View):
 
             response = openai.Completion.create(
                 engine="davinci",
-                prompt=prompt,
+                prompt=str(prompt),
                 temperature=0.9,
                 top_p=1,
                 max_tokens=512,
