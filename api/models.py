@@ -13,9 +13,6 @@ class GptBot(models.Model):
         verbose_name = _("GptBot")
         verbose_name_plural = _("GptBots")
 
-    def __str__(self):
-        return self.name
-
     def get_absolute_url(self):
         return reverse("GptBot_detail", kwargs={"pk": self.pk})
 
