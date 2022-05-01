@@ -78,7 +78,7 @@ class WebHookView(View):
                     Button("Voilence", "SERVICE_3"),
                 ],
                     
-            ).send().sendButtonTemplate(":", [Button("Disaster Rescue", "SERVICE_4"),]).send()
+            ).send().sendButtonTemplate("", [Button("Disaster Rescue", "SERVICE_4"),]).send()
         
         if payload[:7] == "SERVICE":
             sendAPIResponse(sender_psid).sendButtonTemplate(
