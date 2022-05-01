@@ -157,7 +157,7 @@ class WebHookView(View):
                 "Please share us your location (with country) so that we can provide you relevant service providers"
             ).send()
             g = GptBot.objects.get(psid=sender_psid)
-            g.address = True
+            g.is_address = True
             g.service_id = payload.split("_")[2]
             g.save()
 
@@ -224,10 +224,12 @@ class WebHookView(View):
                 if webhook_event.get("message"):
                     message = webhook_event.get("message")
                     try: 
-                        g = GptBot.objects.get(psid=sender_psid)
-
-                        if g.address:
-                            g.address = False
+                        try:
+                            g = GptBot.objects.get(psid=sender_psid)
+                        except Exception:
+                            g = GptBot.objects.create(psid=sender_psid, prompt="")
+                        if g.is_address:
+                            g.is_address = False
                             g.save()
                             self.handleAddress(sender_psid, message)
                         else:
