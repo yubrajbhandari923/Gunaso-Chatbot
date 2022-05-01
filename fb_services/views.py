@@ -163,7 +163,7 @@ class WebHookView(View):
 
         return
 
-    def handleAddress(self, sender_psid, message):
+    def handleAddress(self, sender_psid, recieved_message):
         sendAPIResponse(sender_psid).sendSenderAction("typing_on").send()
 
         text = recieved_message.get("text")

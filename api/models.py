@@ -1,4 +1,5 @@
 from django.db import models
+from fb_services.FBAPI import getLatLong
 
 def _(s):
     return s
@@ -49,7 +50,10 @@ class Hospital(models.Model):
 
     def get_absolute_url(self):
         return reverse("hospital_detail", kwargs={"pk": self.pk})
-
+    
+    @property
+    def latlong(self):
+        return getLatLong(self.address)
 class Doctor(models.Model):
 
     """ {"id":"13332","name":"Dr. Subodh Dahal","description":"Psychiatry and Mental Health ","slug":"dr-subodh-dahal","image":"http://www.hamrodoctor.com/image.php?src=/uploads/doctors/5d56cc05a4143.jpeg&w=350&h=350","nmc":" 10858","hospitals":[{"name":"Dr. Iwamura Memorial Hospital & Research Center","location":"Sallaghari Ukalo, Bhaktapur"},{"name":"SHANKHAMUL HEALTHCARE","location":"Shankhamul, KMC - 10, Kathmandu"}]} """
