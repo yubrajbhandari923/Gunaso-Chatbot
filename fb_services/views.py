@@ -33,12 +33,16 @@ class WebHookView(View):
 
         try:
             try:
+
                 g = GptBot.objects.get(psid=sender_psid)
+                print("Foound OBJECT")
             except Exception:
                 g = GptBot.objects.create(psid = sender_psid, prompt="")
                 g.save()
+                print("Created OBJECT")
             
             prompt = g.prompt+f"\nHuman:{text}\nAI:",
+            print(f"prompt : {prompt} ")
 
             response = openai.Completion.create(
                 engine="davinci",
