@@ -30,19 +30,16 @@ class WebHookView(View):
         text = recieved_message.get("text")
 
         try:
-            response = json.loads(
-
-            openai.Completion.create(
+            response = openai.Completion.create(
                 engine="davinci",
-                prompt=text,
+                prompt="I am sad. What should I do",
                 temperature=0.9,
                 max_tokens=512,
                 top_p=1,
                 frequency_penalty=1,
                 presence_penalty=1,
-            )
+            ).to_dict()['choices'][0]['text']
 
-        )
         except Exception:
             response = "K Bolya vai, K bolya."
 
@@ -96,16 +93,16 @@ class WebHookView(View):
             ).send().sendGenericTemplate(
                 [
                     genericTemplateElement(
-                        "Health Services", "", img_url_("img2"), default_action={"type": "postback", "payload": "SERVICE_1"}
+                        "Health Services", "", img_url_("img2"), buttons=[{Button('Yes', 'SERVICE_1')}]
                     ),
                     genericTemplateElement(
-                        "Mental Health", "", img_url_("img3"), default_action={"type": "postback", "payload": "SERVICE_2"}
+                        "Mental Health", "", img_url_("img3"), buttons=[{Button('Yes', 'SERVICE_2')}]
                     ),
                     genericTemplateElement(
-                        "Voilence", "", img_url_("img4"), default_action={"type": "postback", "payload": "SERVICE_3"}
+                        "Voilence", "", img_url_("img4"), buttons=[{Button('Yes', 'SERVICE_1')}]
                     ),
                     genericTemplateElement(
-                        "Disaster Rescue", "", img_url_("img6"), default_action={"type": "postback", "payload": "SERVICE_4"}
+                        "Disaster Rescue", "", img_url_("img6"), buttons=[{Button('Yes', 'SERVICE_1')}]
                     )
                 ],
             ).send()
