@@ -198,7 +198,21 @@ class WebHookView(View):
             
         if g.service_id == 3:
             """ Violence """
-            pass
+            vs = Violence.objects.all()
+            r1, r2, r3 = random.sample(range(0, vs.count()), 3)
+
+            for j,i in enumerate([r1,r2,r3]):
+                s.sendButtonTemplate(f"Contect : {j}. {vs[i].name} at { vs[i].address }, phone: {vs[i].phone}", [Button("Call Now", "CALL")]).send()
+        
+        if g.service_id == 4:
+            """ Violence """
+            vs = DisasterRelif.objects.all()
+            r1, r2, r3 = random.sample(range(0, vs.count()), 3)
+
+            for j,i in enumerate([r1,r2,r3]):
+                s.sendButtonTemplate(f"Contect : {j}. {vs[i].name} at { vs[i].address }, phone: {vs[i].phone}", [Button("Call Now", "CALL")]).send()
+
+
         g.service_id = 0
         g.save()
     
