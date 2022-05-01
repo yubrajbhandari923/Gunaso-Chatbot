@@ -156,7 +156,7 @@ class WebHookView(View):
             sendAPIResponse(sender_psid).sendText(
                 "Please share us your location (with country) so that we can provide you relevant service providers"
             ).send()
-
+            address = True
             service_id = payload.split("_")[2]
 
         return

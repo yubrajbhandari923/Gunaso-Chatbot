@@ -261,3 +261,4 @@ def getLatLong(address):
     res = requests.get('http://api.positionstack.com/v1/forward?access_key=362c13ac12fc8a239ab71e1aa5379e28&query='+address)
     res  = json.loads(res)[0]
     return res["latitude"], res["longitude"]
+
