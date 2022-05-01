@@ -220,7 +220,7 @@ class WebHookView(View):
                 ).send().sendSenderAction("typing_on")
 
 
-                print(f"\n\n\n Address:{address}, service_id: {service_id} \n\n\n")
+                # print(f"\n\n\n Address:{address}, service_id: {service_id} \n\n\n")
                 try: 
                     g = GptBot.objects.get(psid=sender_psid)
 
